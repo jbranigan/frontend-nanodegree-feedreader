@@ -88,9 +88,8 @@ $(function() {
             loadFeed(0, done);
         });
 
-        it('should populate the feed container with entries', function(done) {
-            expect($('.entry').length).not.toBe(0);
-            done();
+        it('should populate the feed container with entries', function() {
+            expect($('.feed .entry').length).not.toBe(0);
         });
     });
     
@@ -119,9 +118,8 @@ $(function() {
             }
         });
 
-        it('should update the feed content', function(done) {
+        it('should update the feed content', function() {
             expect(oldFeed).not.toEqual(newFeed);
-            done();
         });
     });
 }());
