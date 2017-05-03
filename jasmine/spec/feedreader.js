@@ -85,33 +85,42 @@ $(function() {
          * a single .entry element within the .feed container.
          */
         beforeEach(function(done) {
-            loadFeed(0, function() {
-                done();
-            });
+            loadFeed(0, done);
         });
 
-        it('should populate the feed container', function(done) {
-            expect($('.feed').children().length).not.toBe(0);
+        it('should populate the feed container with entries', function(done) {
+            expect($('.entry').length).not.toBe(0);
             done();
         });
     });
-    /* TODO: Write a new test suite named "New Feed Selection" */
+    
     describe('New Feed Selection', function() {
         /* This test ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          */
 
-        var oldHeadline = $('.header-title').first().html();
+        var oldFeed,
+            newFeed;
         
+        /* Get the results of two subsequent loadFeed() calls
+         * I notice that this flashes an update on the interface.
+         * In practice, how should this be approached? I assume tests are
+         * only run in the development environment. Is this acceptable?
+         */
         beforeEach(function(done) {
-            loadFeed(0, function() {
-                done();
-            });
+            if (allFeeds.length > 1) {
+                loadFeed(1, function() {
+                    oldFeed = $('.feed').html();
+                    loadFeed(0, function() {
+                        newFeed = $('.feed').html();
+                        done();
+                    });
+                });
+            }
         });
 
         it('should update the feed content', function(done) {
-            var newHeadline = $('.header-title').first().html();
-            expect(oldHeadline).not.toEqual(newHeadline);
+            expect(oldFeed).not.toEqual(newFeed);
             done();
         });
     });
